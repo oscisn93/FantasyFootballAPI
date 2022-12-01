@@ -1,10 +1,1 @@
-[
-    {
-        "id": "1",
-        "title": "finish presentation",
-        "description": "finish slides for python presentation on fast api",
-        "owner": "oscin93",
-        "completed": "false",
-        "edited": "false"
-    }
-]
+[{"id": "1", "title": "finish presentation", "description": "finish slides for python presentation on fast api", "owner": "oscin93", "completed": "false", "edited": "false"}, 
