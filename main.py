@@ -24,7 +24,8 @@ class Todo(BaseModel):
 
 
 # import the mock data as a dict from a json file.
-def fetchData() -> List[Todo]:
+def fetch_data() -> List[Todo]:
+    """ fetch todo data """
     with open('todos.json', encoding='json') as file:
         todos: List[Todo] = json.load(file)
         return todos
@@ -41,9 +42,8 @@ async def root():
 
 @app.get("/todos")
 async def get_todos():
-    with open('todos.json') as todos:
-        data = json.load(todos)
-        return data
+    """ get all todos """
+    return fetch_data()
 
 
 @app.post("/todos/{id}")
