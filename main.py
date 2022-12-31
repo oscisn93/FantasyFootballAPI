@@ -1,55 +1,70 @@
-""" Main Module for our todo application """
-import json
-from typing import List
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
+""" Main Module for fastapi application """
 import uvicorn
+from typing import List, Optional
+
+from fastapi import FastAPI, HTTPException
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
+# base model
+class PlayerBase(SQLModel):
+    name: str = Field(index=True)
+    age: Optional[int] = Field(default=None, index=True)
+
+#  data models
+class PlayerCreate(PlayerBase):
+    ...
 
 
-class User(BaseModel):
-    """ User Model """
-    username: str
-    email: str
-    password: str
-
-
-class Todo(BaseModel):
-    """ Todo Model """
+class PlayerRead(PlayerBase):
     id: int
-    title: str
-    description: str
-    completed: bool
+
+#  table model
+class Player(PlayerBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
 
 
-# import the mock data as a dict from a json file.
-def fetch_data() -> List[Todo]:
-    """ fetch todo data """
-    with open('todos.json', encoding='json') as file:
-        todos: List[Todo] = json.load(file)
-        return todos
-# Instatiate the FastAPI object and set the default templates directory
+# mysql_uri = "mysql+mysqlconnector://root:yzuiKJCjVGYzWsTrHnmb@containers-us-west-47.railway.app:6875/railway"
+sqlite_uri = 'sqlite:///database.sqlite'
+engine = create_engine(url=sqlite_uri, echo=True)
+
+
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
+
+
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
 
 
-@app.get("/")
-async def root():
-    """ root route """
-    return {"message": "Hello World"}
-
-@app.get("/todos")
-async def get_todos():
-    """ get all todos """
-    return fetch_data()
+@app.on_event('startup')
+def on_startup():
+    create_db_and_tables()
 
 
-@app.post("/todos/{id}")
-async def create_todo(todo: Todo):
-    """ create a new todo """
-    return todo
+@app.post('/players/', response_model=PlayerRead)
+async def create_player(player: PlayerCreate):
+    with Session(engine) as session:
+        db_player = Player.from_orm(player)
+        session.add(db_player)
+        session.commit()
+        session.refresh(db_player)
+        return db_player
 
-if __name__ == "__main__":
+
+@app.get('/players/', response_model=List[PlayerRead])
+async def read_heroes() -> List[PlayerRead]:
+    with Session(engine) as session:
+        players = session.exec(select(Player)).all()
+        return players
+
+
+@app.get('/players/{player_id}', response_model=PlayerRead)
+async def read_player(player_id: int):
+    with Session(engine) as session:
+        player = session.get(Player, player_id)
+        if not player:
+            raise HTTPException(status_code=404, detail="Player not found")
+        return player
+
+
+if __name__ == '__main__':
     uvicorn.run(app)
