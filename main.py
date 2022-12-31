@@ -5,12 +5,12 @@ from typing import List, Optional
 from fastapi import FastAPI, HTTPException
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
-# base model
+
 class PlayerBase(SQLModel):
     name: str = Field(index=True)
     age: Optional[int] = Field(default=None, index=True)
 
-#  data models
+
 class PlayerCreate(PlayerBase):
     ...
 
@@ -18,11 +18,12 @@ class PlayerCreate(PlayerBase):
 class PlayerRead(PlayerBase):
     id: int
 
-#  table model
+
 class Player(PlayerBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
 
 
+# deleted container just here as a placeholder
 # mysql_uri = "mysql+mysqlconnector://root:yzuiKJCjVGYzWsTrHnmb@containers-us-west-47.railway.app:6875/railway"
 sqlite_uri = 'sqlite:///database.sqlite'
 engine = create_engine(url=sqlite_uri, echo=True)
