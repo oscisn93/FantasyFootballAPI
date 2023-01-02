@@ -6,10 +6,10 @@ from routes import router as api_router
 
 # from db import init_db
 
-def create_app() -> FastAPI:
-    app = FastAPI()
-    app.include_router(api_router)
-    return app
+
+app = FastAPI()
+app.include_router(api_router)
+
 
 # @app.on_event('startup')
 # async def on_start_up():
@@ -17,4 +17,4 @@ def create_app() -> FastAPI:
 
 
 if __name__ == '__main__':
-    uvicorn.run(create_app())
+    uvicorn.run(app)

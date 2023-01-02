@@ -1,1 +1,3 @@
 *.sqlite
+__pychache__
+*.pyc

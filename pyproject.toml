@@ -10,11 +10,7 @@ fastapi = "^0.88.0"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
 sqlmodel = "^0.0.8"
 mysql = "^0.0.3"
-alembic = "^1.9.1"
-asyncpg = "^0.27.0"
 aiosqlite = "^0.18.0"
-
-
 
 [tool.poetry.dev-dependencies]
 

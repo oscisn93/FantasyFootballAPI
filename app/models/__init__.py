@@ -2,19 +2,22 @@ from typing import Optional
 from sqlmodel import SQLModel, Field
 
 
-class PlayerBase(SQLModel):
+class KickerBase(SQLModel):
     name: str = Field(index=True)
-    age: Optional[int] = Field(default=None, index=True)
+    team: str = Field(index=True)
+    position: str = Field(index=True)
+    xpm: int = Field(index=True)
+    xpa: int = Field(index=True)
+    fgm: int = Field(index=True)
+    fga: int = Field(index=True)
 
-
-class PlayerCreate(PlayerBase):
-    ...
-
-
-class PlayerRead(PlayerBase):
+class KickerRead(KickerBase):
     id: int
 
 
-class Player(PlayerBase, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+class KickerCreate(KickerBase):
+    ...
 
+
+class Kicker(KickerBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
