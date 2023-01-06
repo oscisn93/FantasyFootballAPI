@@ -16,7 +16,6 @@
 
 ## Resources Used
 
-- Data scraped from profootballreference.com, in accordance with the rules in the `robots.txt`
 - Skeleton is based on the SQLModel FastAPI tutorial: https://sqlmodel.tiangolo.com/tutorial/fastapi/
 - Additional Resources:
     - https://testdriven.io/blog/fastapi-sqlmodel/
