@@ -51,11 +51,7 @@ def get_player_data(id_: str):
 def print_json():
     player = []
     player_ids = {
-        'pass': 'div_player_offense',
-        'passing': 'all_passing_advanced',
-        'rushing': 'all_rushing_advanced',
-        'recieving': 'all_receiving_advanced',
-        'kicking': 'all_kicking'
+        'pass': 'div_player_offense'
     }
     for type, id_ in player_ids.items():
         player.append({type: get_player_data(id_)})
