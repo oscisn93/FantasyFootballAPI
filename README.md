@@ -1,4 +1,4 @@
-# Fantasy Football API
+# Async FastAPI
 
 ## Technologies Used
 
