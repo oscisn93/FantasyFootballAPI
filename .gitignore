@@ -1,3 +1,4 @@
-*.sqlite
 __pychache__
-*.pyc
+.venv
+.env
+.db
